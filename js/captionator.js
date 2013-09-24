@@ -13,7 +13,7 @@
 
 /* Build date: Fri Jan 25 2013 15:37:24 GMT+1100 (EST) */
 
-;(function(){
+(function(){
 	"use strict";
 
 	//	Variables you might want to tweak
@@ -582,7 +582,7 @@
 	
 	*/
 	captionator.rebuildCaptions = function(videoElement) {
-		var trackList = videoElement.textTracks || [];
+		var trackList = videoElement.cantemoTextTracks || [];
 		var options = videoElement._captionatorOptions instanceof Object ? videoElement._captionatorOptions : {};
 		var currentTime = videoElement.currentTime;
 		var compositeActiveCues = [];
@@ -773,7 +773,7 @@
 		
 		// Browser supports native track API
 		// This should catch Chrome latest and IE10.
-		if ((typeof(document.createElement("video").addTextTrack) === "function" || typeof(document.createElement("video").addTrack) === "function") && !options.forceCaptionify) {
+		if ((typeof(document.createElement("video").addCantemoTextTrack) === "function" || typeof(document.createElement("video").addCantemoTrack) === "function") && !options.forceCaptionify) {
 			return false;
 		}
 		
@@ -808,7 +808,7 @@
 		
 		if (videoElements.length) {
 			videoElements.forEach(function(videoElement) {
-				videoElement.addTextTrack = function(id,kind,label,language,src,type,isDefault) {
+				videoElement.addCantemoTextTrack = function(id,kind,label,language,src,type,isDefault) {
 					var allowedKinds = ["subtitles","captions","descriptions","captions","metadata","chapters"]; // WHATWG SPEC
 					
 					var textKinds = allowedKinds.slice(0,7);
@@ -827,11 +827,11 @@
 					} else {
 						newTrack = new captionator.TextTrack(id,kind,label,language,src,null);
 						if (newTrack) {
-							if (!(videoElement.textTracks instanceof Array)) {
-								videoElement.textTracks = [];
+							if (!(videoElement.cantemoTextTracks instanceof Array)) {
+								videoElement.cantemoTextTracks = [];
 							}
 	
-							videoElement.textTracks.push(newTrack);
+							videoElement.cantemoTextTracks.push(newTrack);
 							return newTrack;
 						} else {
 							return false;
@@ -1280,7 +1280,7 @@
 			}
 		
 			var enabledDefaultTrack = false;
-			[].slice.call(videoElement.querySelectorAll("track"),0).forEach(function(trackElement) {
+			[].slice.call(videoElement.querySelectorAll("cantemoTrack"),0).forEach(function(trackElement) {
 				var sources = null;
 				if (trackElement.querySelectorAll("source").length > 0) {
 					sources = trackElement.querySelectorAll("source");
@@ -1288,7 +1288,7 @@
 					sources = trackElement.getAttribute("src");
 				}
 			
-				var trackObject = videoElement.addTextTrack(
+				var trackObject = videoElement.addCantemoTextTrack(
 										(trackElement.getAttribute("id")||captionator.generateID()),
 										trackElement.getAttribute("kind"),
 										trackElement.getAttribute("label"),
@@ -1397,7 +1397,7 @@
 				var videoElement = eventData.target;
 				// update active cues
 				try {
-					videoElement.textTracks.forEach(function(track) {
+					videoElement.cantemoTextTracks.forEach(function(track) {
 						track.activeCues.refreshCues.apply(track.activeCues);
 					});
 				} catch(error) {}
@@ -1419,7 +1419,7 @@
 			if (options.enableHighResolution === true) {
 				window.setInterval(function captionatorHighResProcessor() {
 					try {
-						videoElement.textTracks.forEach(function(track) {
+						videoElement.cantemoTextTracks.forEach(function(track) {
 							track.activeCues.refreshCues.apply(track.activeCues);
 						});
 					} catch(error) {}
