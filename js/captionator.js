@@ -11,7 +11,7 @@
 /*Tab indented, tab = 4 spaces*/
 
 
-/* Build date: Fri Jan 25 2013 15:37:24 GMT+1100 (EST) */
+/* Build date: Tue Mar 22 2016 19:08:01 GMT+0100 (CET) */
 
 (function(){
 	"use strict";
@@ -25,7 +25,21 @@
 	var objectsCreated = false;				//	We don't want to create objects twice, or instanceof won't work
 	
 	var captionator = {};
-	window.captionator = captionator;
+	
+	// browserify, node, etc.
+	if (typeof module === 'object' && typeof module.exports === 'object') {
+		// node-style module
+		module.exports = captionator;
+	} else if (typeof define === 'function' && define.amd) {
+		// amd
+		define('captionator', function () {
+			return captionator;
+		});
+	} else {
+		// everything else
+		window.captionator = captionator;
+	}
+	
 
 	
 	
@@ -712,6 +726,7 @@
 			});
 		}
 	};
+	
 
 	/*
 		captionator.captionify([selector string array | DOMElement array | selector string | singular dom element ],
@@ -847,6 +862,7 @@
 			return false;
 		}
 	};
+	
 
 	/*
 		captionator.parseCaptions(string captionData, object options)
@@ -1436,6 +1452,7 @@
 	
 		return videoElement;
 	};
+	
 
 	/*
 		captionator.getNodeMetrics(DOMNode)

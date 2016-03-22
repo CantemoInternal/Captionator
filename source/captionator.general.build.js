@@ -11,7 +11,7 @@
 
 */
 captionator.rebuildCaptions = function(videoElement) {
-	var trackList = videoElement.textTracks || [];
+	var trackList = videoElement.cantemoTextTracks || [];
 	var options = videoElement._captionatorOptions instanceof Object ? videoElement._captionatorOptions : {};
 	var currentTime = videoElement.currentTime;
 	var compositeActiveCues = [];

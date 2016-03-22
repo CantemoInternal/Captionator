@@ -37,7 +37,7 @@ captionator.processVideoElement = function(videoElement,defaultLanguage,options)
 		}
 	
 		var enabledDefaultTrack = false;
-		[].slice.call(videoElement.querySelectorAll("track"),0).forEach(function(trackElement) {
+		[].slice.call(videoElement.querySelectorAll("cantemoTrack"),0).forEach(function(trackElement) {
 			var sources = null;
 			if (trackElement.querySelectorAll("source").length > 0) {
 				sources = trackElement.querySelectorAll("source");
@@ -45,7 +45,7 @@ captionator.processVideoElement = function(videoElement,defaultLanguage,options)
 				sources = trackElement.getAttribute("src");
 			}
 		
-			var trackObject = videoElement.addTextTrack(
+			var trackObject = videoElement.addCantemoTextTrack(
 									(trackElement.getAttribute("id")||captionator.generateID()),
 									trackElement.getAttribute("kind"),
 									trackElement.getAttribute("label"),
@@ -154,7 +154,7 @@ captionator.processVideoElement = function(videoElement,defaultLanguage,options)
 			var videoElement = eventData.target;
 			// update active cues
 			try {
-				videoElement.textTracks.forEach(function(track) {
+				videoElement.cantemoTextTracks.forEach(function(track) {
 					track.activeCues.refreshCues.apply(track.activeCues);
 				});
 			} catch(error) {}
@@ -176,7 +176,7 @@ captionator.processVideoElement = function(videoElement,defaultLanguage,options)
 		if (options.enableHighResolution === true) {
 			window.setInterval(function captionatorHighResProcessor() {
 				try {
-					videoElement.textTracks.forEach(function(track) {
+					videoElement.cantemoTextTracks.forEach(function(track) {
 						track.activeCues.refreshCues.apply(track.activeCues);
 					});
 				} catch(error) {}

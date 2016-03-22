@@ -58,7 +58,7 @@ captionator.captionify = function(element,defaultLanguage,options) {
 	
 	// Browser supports native track API
 	// This should catch Chrome latest and IE10.
-	if ((typeof(document.createElement("video").addTextTrack) === "function" || typeof(document.createElement("video").addTrack) === "function") && !options.forceCaptionify) {
+	if ((typeof(document.createElement("video").addCantemoTextTrack) === "function" || typeof(document.createElement("video").addCantemoTrack) === "function") && !options.forceCaptionify) {
 		return false;
 	}
 	
@@ -93,7 +93,7 @@ captionator.captionify = function(element,defaultLanguage,options) {
 	
 	if (videoElements.length) {
 		videoElements.forEach(function(videoElement) {
-			videoElement.addTextTrack = function(id,kind,label,language,src,type,isDefault) {
+			videoElement.addCantemoTextTrack = function(id,kind,label,language,src,type,isDefault) {
 				var allowedKinds = ["subtitles","captions","descriptions","captions","metadata","chapters"]; // WHATWG SPEC
 				
 				var textKinds = allowedKinds.slice(0,7);
@@ -112,11 +112,11 @@ captionator.captionify = function(element,defaultLanguage,options) {
 				} else {
 					newTrack = new captionator.TextTrack(id,kind,label,language,src,null);
 					if (newTrack) {
-						if (!(videoElement.textTracks instanceof Array)) {
-							videoElement.textTracks = [];
+						if (!(videoElement.cantemoTextTracks instanceof Array)) {
+							videoElement.cantemoTextTracks = [];
 						}
 
-						videoElement.textTracks.push(newTrack);
+						videoElement.cantemoTextTracks.push(newTrack);
 						return newTrack;
 					} else {
 						return false;
